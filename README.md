@@ -1,4 +1,3 @@
-----
 💾 SQL Portfolio
 ----
 This repository contains all my completed SQL projects, showcasing how I extract, clean, and analyze data to solve real-world business problems.
@@ -9,12 +8,12 @@ All projects were developed primarily using Microsoft SQL Server Management Stud
 
 Here are the types of projects you’ll find in this repository:
 
-📊 Data Cleaning & Transformation
+* 📊 Data Cleaning & Transformation
 
-📈 Exploratory Data Analysis (EDA)
+* 📈 Exploratory Data Analysis (EDA)
 
-🧮 Business KPIs & Reporting Queries
+* 🧮 Business KPIs & Reporting Queries
 
-🔍 Complex Joins, Window Functions, and CTEs
+* 🔍 Complex Joins, Window Functions, and CTEs
 
-💡 End-to-End Case Studies in Real-World Scenarios
+* 💡 End-to-End Case Studies in Real-World Scenarios
