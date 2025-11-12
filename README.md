@@ -2,7 +2,7 @@
 ----
 This repository contains all my completed SQL projects, showcasing how I extract, clean, and analyze data to solve real-world business problems.
 
-All projects were developed primarily using Microsoft SQL Server Management Studio (SSMS) — with queries easily adaptable to other SQL environments such as MySQL, PostgreSQL, or Azure SQL Database.
+All projects were developed primarily using Microsoft SQL Server Management Studio (SSMS)  with queries easily adaptable to other SQL environments such as MySQL, PostgreSQL, or Azure SQL Database.
 
 ⚠ Note: Some SQL functions may vary across different database systems. If you’re using MySQL or PostgreSQL, be sure to confirm that syntax and function names align with your chosen environment.
 
