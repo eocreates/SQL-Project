@@ -8,7 +8,7 @@ All projects were developed primarily using Microsoft SQL Server Management Stud
 
 Here are the types of projects you’ll find in this repository:
 
-* 📊 Data Cleaning & Transformation
+* [📊 Data Cleaning & Transformation](https://github.com/eocreates/Sales-Data-Cleaning-Preprocessing-Project)
 
 * 📈 Exploratory Data Analysis (EDA)
 
