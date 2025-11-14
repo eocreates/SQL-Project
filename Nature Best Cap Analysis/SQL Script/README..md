@@ -183,6 +183,120 @@ How We Tested Each Hypothesis
      - 1 week after (July 4–11) - supplier kept supplying, defects continued.
    * Finding: The problem started when they supplied HDPE caps for July 2–3 and persisted afterward.
 
+## QUERIES AND LOGIC USED (VIEWS)
+---
+We created 4 unified view to simpplify analysis and reuse in PowerBi
+
+Logic
+
+View 1: Defect Days (2–3 July 2025)
+
+This view captures all metrics during the defect days.
+````sql
+CREATE VIEW all_metrics_capped AS
+SELECT 
+	c.CapMaterial,
+    c.CapType,
+    f.DateKey,
+    s.SupplierID_Natural,
+    s.SupplierName,
+    s.country,
+    COUNT(c.CapBatchID_Natural) AS total_CAPS,
+    SUM(CostPerCap_NGN) AS total_amount,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) AS LeakyCap_count,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) * 100.0/COUNT(c.CapBatchID_Natural) AS LeakyCap_percent,
+    SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) Amount_lost,
+    SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) * 100.0 / SUM(c.CostPerCap_NGN) AS amount_lost_percent
+FROM factproductionevent f
+JOIN dimcapbatch c 
+    ON f.CapBatchSK = c.CapBatchSK
+JOIN dimsupplier s ON c.SupplierSK = s.SupplierSK
+WHERE f.DateKey BETWEEN '2025-07-02' AND '2025-07-03'
+GROUP BY  f.DateKey, c.CapType,c.CapMaterial,s.SupplierID_Natural,s.SupplierName,s.country;
+````
+View 2: One Week Before Defect
+
+Analyzes trends and defect levels one week before the defect event (25 June – 1 July 2025).
+
+```Sql
+CREATE VIEW weekbefore AS
+SELECT 
+    f.DateKey,
+    c.CapMaterial,
+    c.CapType,
+    s.SupplierName,
+    SUM(CostPerCap_NGN) AS total_amount,
+    COUNT(c.CapBatchID_Natural) AS total_CAPS,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) AS LeakyCap_count,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) * 100.0 / COUNT(c.CapBatchID_Natural) AS LeakyCap_percent,
+	SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) Amount_lost,
+    SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) * 100.0 / SUM(c.CostPerCap_NGN) AS amount_lost_percent
+FROM factproductionevent f
+JOIN dimcapbatch c 
+    ON f.CapBatchSK = c.CapBatchSK
+JOIN dimsupplier s 
+    ON c.SupplierSK = s.SupplierSK
+WHERE f.DateKey BETWEEN '2025-06-25' AND '2025-07-01'   -- 1 week BEFORE the defect days only
+GROUP BY f.DateKey, c.CapType, c.CapMaterial, s.SupplierName
+ORDER BY f.DateKey, LeakyCap_percent DESC;
+````
+View 3: One Week After Defect
+
+Tracks post-defect behavior and costs (4 – 11 July 2025).
+```sql
+CREATE VIEW weekafter AS
+SELECT 
+    f.DateKey,
+    c.CapMaterial,
+    c.CapType,
+    s.SupplierName,
+    SUM(CostPerCap_NGN) AS total_amount,
+    COUNT(c.CapBatchID_Natural) AS total_CAPS,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) AS LeakyCap_count,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) * 100.0 / COUNT(c.CapBatchID_Natural) AS LeakyCap_percent,
+	SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) Amount_lost,
+    SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) * 100.0 / SUM(c.CostPerCap_NGN) AS amount_lost_percent
+FROM factproductionevent f
+JOIN dimcapbatch c 
+    ON f.CapBatchSK = c.CapBatchSK
+JOIN dimsupplier s 
+    ON c.SupplierSK = s.SupplierSK
+WHERE f.DateKey BETWEEN '2025-07-04' AND '2025-07-011'   -- 1 week AFTER the defect days only
+GROUP BY f.DateKey, c.CapType, c.CapMaterial, s.SupplierName;
+```
+
+View 4: Combined Metrics (Before, During, After)
+
+A view covering the entire period from 25 June to 11 July 2025 for side-by-side comparison.
+```sql
+CREATE VIEW allmetrics AS
+SELECT 
+	c.CapMaterial,
+    c.CapType,
+    f.DateKey,
+    s.SupplierID_Natural,
+    s.SupplierName,
+    s.country,
+    COUNT(c.CapBatchID_Natural) AS total_CAPS,
+    SUM(CostPerCap_NGN) AS total_amount,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) AS LeakyCap_count,
+    SUM(CASE WHEN f.Defect_Type IN ('LeakyCap', 'both') THEN 1 ELSE 0 END) * 100.0/COUNT(c.CapBatchID_Natural) AS LeakyCap_percent,
+    SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) Amount_lost,
+    SUM(CASE WHEN Defect_type IN ('LeakyCap', 'both') THEN c.CostPerCap_NGN ELSE 0 END) * 100.0 / SUM(c.CostPerCap_NGN) AS amount_lost_percent
+FROM factproductionevent f
+JOIN dimcapbatch c 
+    ON f.CapBatchSK = c.CapBatchSK
+JOIN dimsupplier s ON c.SupplierSK = s.SupplierSK
+WHERE f.DateKey BETWEEN '2025-06-25' AND '2025-07-11'
+GROUP BY  f.DateKey, c.CapType,c.CapMaterial,s.SupplierID_Natural,s.SupplierName,s.country;
+````
+
+## Root Cause Summary
+The sudden rise in LeakyCap defects on July 2–3, 2025 was linked to a faulty supplier batch, not internal operations. This caused higher cap waste but was confirmed as a supplier quality issue, not an ongoing risk.
+
+## VISUALIZATIONS
+Procurement Manager
+
 
 
 
