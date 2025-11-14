@@ -6,13 +6,13 @@ TechNova Software Inc. is a fast-growing SaaS company located in Nairobi, Kenya.
 
 ## Table of Contents
 ----
-Context & Problem
-Project Overview
-Business Questions
-Objectives & Deliverables
-KPIs
-Stakeholders
-Data Source
+* Context & Problem
+* Project Overview
+* Business Questions
+* Objectives & Deliverables
+* KPIs
+* Stakeholders
+* Data Source
 
 ## Context & Problem
 Technova’s quarterly cloud bill is high, unpredictable, and close to exceeding budget.
