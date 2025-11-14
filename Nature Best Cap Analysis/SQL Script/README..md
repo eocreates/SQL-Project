@@ -47,4 +47,5 @@ We worked on a structured production dataset built around a star schema with a c
 ---
 The ER diagram is use to visualize table relationships and track foreign keys used during analysis.
 
-| <img src="https://raw.githubusercontent.com/eocreates/eocreates/main/Before.jpg" width="300"/>|
+<img src="https://github.com/eocreates/SQL-Project/blob/main/Nature%20Best%20Cap%20Analysis/Report/481005514-94f76626-16ae-4a94-88d7-0950338b4ef4.png" width="400">
+
