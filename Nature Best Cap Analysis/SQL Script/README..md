@@ -178,9 +178,9 @@ How We Tested Each Hypothesis
      
 5. Hypothesis 5: Supplier performance varies before vs after defect dates
    * Test:
-   -1 week before (June 25–July 1) - no supply issues from Anambra Glass & PET.
-   -During defect days (July 2–3) - major spike in defects.
-   -1 week after (July 4–11) - supplier kept supplying, defects continued.
+     - 1 week before (June 25–July 1) - no supply issues from Anambra Glass & PET.
+     - During defect days (July 2–3) - major spike in defects.
+     - 1 week after (July 4–11) - supplier kept supplying, defects continued.
   * Finding: The problem started when they supplied HDPE caps for July 2–3 and persisted afterward.
 
 
