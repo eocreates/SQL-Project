@@ -34,7 +34,7 @@ We need to uncover the cause of this spike, separate strategic costs (investment
     - Support the Finance and Engineering teams in decision-making.
 
 * Deliverables
-  - Clean, structured relational database in MySQL.
+  - Clean, structured relational database in SQL.
   - SQL scripts for data cleaning, analysis, and visualization.
   - Analytical summary with key insights and recommendations.
   - A final consolidated SQL view (vw_Master_Report) for dashboards.
@@ -43,15 +43,9 @@ We need to uncover the cause of this spike, separate strategic costs (investment
 The data was obtained from TechNova’s internal cloud billing system, exported as CSV files.
 
 Datasets Used:
-
-cost_and_usage_report.csv – Contains detailed line items of cloud charges and usage.
-
-resource_tags.csv – Maps each resource to a team, project, and environment.
-
-resource_configuration.csv – Includes resource status, instance type, and creation/decommission dates.
-
-performance_metrics.csv – Contains average performance and utilization scores.
-
-quarterly_budgets.csv – Defines budget allocations per team.
-
-security_findings.csv – Records compliance and security-related data.
+  * cost_and_usage_report.csv – Contains detailed line items of cloud charges and usage.
+  * resource_tags.csv – Maps each resource to a team, project, and environment.
+  * resource_configuration.csv – Includes resource status, instance type, and creation/decommission dates.
+  * performance_metrics.csv – Contains average performance and utilization scores.
+  * quarterly_budgets.csv – Defines budget allocations per team.
+  * security_findings.csv – Records compliance and security-related data.
