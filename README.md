@@ -10,7 +10,7 @@ Here are the types of projects you’ll find in this repository:
 
 * [📊 Data Cleaning & Transformation](https://github.com/eocreates/Sales-Data-Cleaning-Preprocessing-Project)
 
-* 📈 Nature's Best Cap Analysis
+* [📈 Nature's Best Cap Analysis](https://github.com/eocreates/SQL-Project/blob/main/Nature%20Best%20Cap%20Analysis/SQL%20Script/README..md)
 
 * 🧮 Business KPIs & Reporting Queries
 
