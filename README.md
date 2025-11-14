@@ -12,8 +12,4 @@ Here are the types of projects you’ll find in this repository:
 
 * [📈 Nature's Best Cap Analysis](https://github.com/eocreates/SQL-Project/blob/main/Nature%20Best%20Cap%20Analysis/SQL%20Script/README..md)
 
-* 🧮 Business KPIs & Reporting Queries
-
-* 🔍 Complex Joins, Window Functions, and CTEs
-
-* 💡 End-to-End Case Studies in Real-World Scenarios
+* [☁️ TechNova Cloud Optimization](https://github.com/eocreates/SQL-Project/edit/main/Technova%20Cloud%20Optimization/Cloud%20Cost%20Optimization.md)
