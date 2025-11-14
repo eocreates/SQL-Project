@@ -1,5 +1,6 @@
 ----
 Nature's Best Drink leakyCap RCA
+---
 
 ## 📚 Table of Contents
 -----
@@ -14,7 +15,7 @@ Nature's Best Drink leakyCap RCA
 - [WHY WE ARE CONFIDENT THE FIX WILL WORK](#why-we-are-confident-the-fix-will-work)
 
 ## CONTEXT AND PROBLEM
- ---
+---
 In the same operational week at the Onitsha plant, Nature Best Juice Co. experienced an unusual spike in Leaky Cap defects across multiple lines, concentrated on July 2–3, 2025. The surge exceeded normal levels, disrupted production, and signaled potential issues in the capping process, materials, or controls that need urgent investigation.
 
 Problem Statement
