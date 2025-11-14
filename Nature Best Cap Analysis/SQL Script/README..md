@@ -129,19 +129,12 @@ Handling NULL Values During the data cleaning process, several key columns conta
 
 Solution Applied
 1. Detection of NULLs
-
 Queried each column to identify how many rows contained missing values.
-
 2. Calculation of Replacement Values
-
 Computed the column average (AVG()) using only non-NULL records.
-
 3. Imputation
-
 Replaced all NULL values with their respective column averages, ensuring consistency in analysis.
-
 4. Validation
-
 Rechecked the columns to confirm no remaining NULL values.
 
 Why This Approach?
