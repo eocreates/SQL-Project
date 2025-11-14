@@ -47,12 +47,42 @@ We worked on a structured production dataset built around a star schema with a c
 ---
 The ER diagram is use to visualize table relationships and track foreign keys used during analysis.
 
-[View full image](https://raw.githubusercontent.com/eocreates/SQL-Project/main/Nature%20Best%20Cap%20Analysis/Report/481005514-94f76626-16ae-4a94-88d7-0950338b4ef4.png)
-
 <a href="https://raw.githubusercontent.com/eocreates/SQL-Project/main/Nature%20Best%20Cap%20Analysis/Report/481005514-94f76626-16ae-4a94-88d7-0950338b4ef4.png">
   <img src="https://raw.githubusercontent.com/eocreates/SQL-Project/main/Nature%20Best%20Cap%20Analysis/Report/481005514-94f76626-16ae-4a94-88d7-0950338b4ef4.png" width="400">
 </a>
 
+## DATA CLEANING
+---
+PHASE 1
+
+STANDARDIZING NUMERICS COLUMNS
+
+The cleaning are done on the following column where we noticed unusual Numerics values,symbols and text. Note that this cleaning was carried out before any analysis (RCA)
+
+* Timestamp -- are critical for trend analysis, cleaning them first ensured that sorting, filtering and comparisons worked properly. We fixed malformed and inconsistent formats, recast from text to datetime.
+* JuiceTemperatureC_In -- this column are neccessary for the determinations of the various temperatgure of the juice as at when produced. it contains some unusual rows like 'WAY TOO HOT','SENSOR_BROKEN','COLD!','HOT!'
+* ActualCapTorque_Nm -- The actual "tightness" measured for the cap on this bottle, in Newton meters.
+* AmbientTemperatureC_Line -- The air temperature around the production line when this bottle was processed, in degrees Celsius.
+
+PHASE 2
+
+## STANDARDIZING TEXT COLUMNS
+---
+
+* Defect Result(String): this column tells us the kind of problem (if any) was found with this bottle: "None" (no defect), "Underfilled" (not enough juice), "Leaky_Cap" (the cap leaks), or "Both" (both underfilled and leaky). so all other similar rows are group and categorize into this category
+* LeakTestResult(String): The outcome of the test to see if the bottle leaks: "Pass" (it doesn't leak) or "Fail" (it leaks).
+
+PHASE 3
+
+REMOVING DUPLICATES
+
+We tested key columns to identify duplicate values in the dataset. After analysis, we removed all duplicate rows. In total, over 32,000 duplicate records were deleted, ensuring the dataset is accurate, consistent, and ready for reliable analysis. Steps:
+
+* Detect duplicates with COUNT(*)
+* Create an index to speed up the update
+* Use a CTE with ROW_NUMBER() to retain one copy of each duplicate set
+* Delete all extra duplicate rows
+* Code Used for Testing and Deleting all Duplicate
 
 
 
