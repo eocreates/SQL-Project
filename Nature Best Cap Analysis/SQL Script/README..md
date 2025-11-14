@@ -301,8 +301,8 @@ The sudden rise in LeakyCap defects on July 2–3, 2025 was linked to a faulty s
 </a> 
 
 
-| Quality Control Lead|
-|---------------------|
+| Quality Control |
+|-----------------|
 
 <a href="https://raw.githubusercontent.com/eocreates/SQL-Project/main/Nature%20Best%20Cap%20Analysis/Report/Quality%20Control%20Lead.png">
   <img src="https://raw.githubusercontent.com/eocreates/SQL-Project/main/Nature%20Best%20Cap%20Analysis/Report/Quality%20Control%20Lead.png" width="700">
