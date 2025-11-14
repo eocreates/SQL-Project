@@ -295,8 +295,9 @@ The sudden rise in LeakyCap defects on July 2–3, 2025 was linked to a faulty s
 
 ## VISUALIZATIONS
 | Procurement Manager |
-|--------|
-| <img src="https://raw.githubusercontent.com/eocreates/eocreates/main/procument%20manager.png" width="400"/> |
+|---------------------|
+| <img src="https://github.com/eocreates/SQL-Project/blob/main/Nature%20Best%20Cap%20Analysis/Report/procument%20manager.png" width="300"> |
+
 
 ## RECOMMENDATIONS
 * Pause or limit supply of Anambra Glass & PET HDPE 28mm PCO1881 caps until quality issues are fully resolved to prevent further defective products and financial losses.
