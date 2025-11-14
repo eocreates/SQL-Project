@@ -296,7 +296,7 @@ The sudden rise in LeakyCap defects on July 2–3, 2025 was linked to a faulty s
 ## VISUALIZATIONS
 | Procurement Manager |
 |---------------------|
-| <img src="https://github.com/eocreates/SQL-Project/blob/main/Nature%20Best%20Cap%20Analysis/Report/procument%20manager.png" width="300"> |
+| <a href=https://private-user-images.githubusercontent.com/procument%20manager.png" width="400"> |
 
 
 ## RECOMMENDATIONS
