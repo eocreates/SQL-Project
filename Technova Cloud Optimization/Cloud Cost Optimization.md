@@ -5,6 +5,7 @@ A Data-Driven Investigation into Cloud Waste and Strategic Spend Analyzing and r
 TechNova Software Inc. is a fast-growing SaaS company located in Nairobi, Kenya.
 
 ## Table of Contents
+----
 Context & Problem
 Project Overview
 Business Questions
