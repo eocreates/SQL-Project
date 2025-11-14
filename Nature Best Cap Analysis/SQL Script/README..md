@@ -294,8 +294,9 @@ GROUP BY  f.DateKey, c.CapType,c.CapMaterial,s.SupplierID_Natural,s.SupplierName
 The sudden rise in LeakyCap defects on July 2–3, 2025 was linked to a faulty supplier batch, not internal operations. This caused higher cap waste but was confirmed as a supplier quality issue, not an ongoing risk.
 
 ## VISUALIZATIONS
-Procurement Manager
-
+| Procurement Manager |
+|--------|
+| <img src="https://raw.githubusercontent.com/eocreates/eocreates/main/procument%20manager.png" width="400"/> |
 
 ## RECOMMENDATIONS
 * Pause or limit supply of Anambra Glass & PET HDPE 28mm PCO1881 caps until quality issues are fully resolved to prevent further defective products and financial losses.
