@@ -162,8 +162,7 @@ Metrics We Calculated
 How We Tested Each Hypothesis
 1. Hypothesis 1: Cap Type is faulty
    * Test: Grouped by CapType, compared defect counts and defect rate.
-   *  Finding: 28mm PCO 1881 HDPE showed highest defect rates.
-    
+   *  Finding: 28mm PCO 1881 HDPE showed highest defect rates.    
 2. Hypothesis 2: Bad Cap Material causes the issue
    * Test: Grouped by CapMaterial (e.g., HDPE vs others).
    * Finding: HDPE had unusually high defect counts.
