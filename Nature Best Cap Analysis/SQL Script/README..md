@@ -142,6 +142,43 @@ Why This Approach?
 * Maintains dataset size for downstream analysis.
 * Provides a balanced, non-biased replacement that reflects typical operating values.
 
+Hypothesis Exploration
+Before we confirmed the root cause, we explore the following hypthesis:
+* Date when the issues started: although the date has been given to us but we did that to confirm it and also to know the analysis days before now
+* Checking defect with the production line
+* Checking defect with shift time
+* Checking defect with the Captype and Capmaterial
+
+ANALYSIS
+---
+Metrics We Calculated
+* Total Caps Produced: Number of caps supplied during production.
+* Defective Caps (LeakyCap_count): Number of defective caps (only LeakyCap or both defects).
+* Defect Rate (%) (LeakyCap_percent): Percentage of defective caps relative to all caps.
+* Total Amount Spent on Caps: Amount spend on all caps supplied for the period.
+* Amount Lost from Defects: Amount lost on all caps supplied for the period due to defective caps.
+* % of Amount Lost: Percentage of amount lost to defective caps.
+
+How We Tested Each Hypothesis
+1. Hypothesis 1: Cap Type is faulty
+* Test: Grouped by CapType, compared defect counts and defect rate.
+* Finding: 28mm PCO 1881 HDPE showed highest defect rates.
+2. Hypothesis 2: Bad Cap Material causes the issue
+* Test: Grouped by CapMaterial (e.g., HDPE vs others).
+* Finding: HDPE had unusually high defect counts.
+3. Hypothesis 3: SupplierSK 1 supplied the defective caps
+* Test: Grouped by SupplierSK and checked LeakyCap_count & % across suppliers.
+* Finding: SupplierSK = 1 had the largest share of defects → supported.
+4. Hypothesis 4: The faulty supplier is CSUP05 (Anambra Glass & PET)
+* Test: Joined dimSupplier to trace SupplierSK → SupplierName.
+* Finding: SupplierID_Natural = CSUP05 ("Anambra Glass & PET).
+5. Hypothesis 5: Supplier performance varies before vs after defect dates
+* Test:
+-1 week before (June 25–July 1) - no supply issues from Anambra Glass & PET.
+-During defect days (July 2–3) - major spike in defects.
+-1 week after (July 4–11) - supplier kept supplying, defects continued.
+* Finding: The problem started when they supplied HDPE caps for July 2–3 and persisted afterward.
+
 
 
 
