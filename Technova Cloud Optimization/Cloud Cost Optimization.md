@@ -1,24 +1,18 @@
 -----
 ☁️ TechNova Cloud Cost Optimization
 -----
-A Data-Driven Investigation into Cloud Waste and Strategic Spend
-
-Analyzing and reducing unnecessary cloud expenses using MySQL to identify waste, inefficiency, and opportunities for savings.
+A Data-Driven Investigation into Cloud Waste and Strategic Spend Analyzing and reducing unnecessary cloud expenses using SQL to identify waste, inefficiency, and opportunities for savings.
 
 ## CONTEXT AND PROBLEM
-TechNova Software Inc. is a fast-growing SaaS company based in Nairobi, Kenya.
-Recently, leadership noticed that cloud costs jumped 37% between July and August 2025 — even though every engineering team was under its quarterly budget.
+TechNova Software Inc. is a fast-growing SaaS company. Recently, leadership noticed that cloud costs jumped 37% between July and August.
 
 ## Project Overview
 TechNova Software Inc., a SaaS company based in Nairobi, Kenya, noticed that its cloud costs were rising rapidly despite stable customer growth. As the company approached its quarterly budget limits, leadership became concerned that a large portion of spending was being wasted on idle or redundant cloud resources.
 
-The goal of this project was to analyze cloud cost data using MySQL to uncover:
-
-Areas of inefficient spending
-
-Teams or projects exceeding budgets
-
-Cost drivers behind a 37% monthly cost increase
+The goal of this project was to analyze cloud cost data using SQL to uncover:
+  1. Areas of inefficient spending
+  2. Teams or projects exceeding budgets
+  3. Cost drivers behind a 37% monthly cost increase
 
 The analysis follows the BAIIR framework — Business Understanding, Acquisition & Cleaning, Integration, Insight Generation, and Recommendation.
 
