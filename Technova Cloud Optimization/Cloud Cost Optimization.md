@@ -3,7 +3,7 @@
 -----
 A Data-Driven Investigation into Cloud Waste and Strategic Spend Analyzing and reducing unnecessary cloud expenses using SQL to identify waste, inefficiency, and opportunities for savings.
 
-## CONTEXT AND PROBLEM
+## Context and Problem
 TechNova Software Inc. is a fast-growing SaaS company. Recently, leadership noticed that cloud costs jumped 37% between July and August.
 
 ## Project Overview
@@ -29,15 +29,15 @@ We need to uncover the cause of this spike, separate strategic costs (investment
 ## Objectives and Deliverables
   * Objectives
     - Detect inefficient or idle cloud resources contributing to waste.
-    - Compare actual vs. budgeted costs by team.    
-  * Identify root causes of rising cloud expenses.
-  * Support the Finance and Engineering teams in decision-making.
+    - Compare actual vs. budgeted costs by team.
+    - Identify root causes of rising cloud expenses.
+    - Support the Finance and Engineering teams in decision-making.
 
 * Deliverables
-- Clean, structured relational database in MySQL.
-- SQL scripts for data cleaning, analysis, and visualization.
-- Analytical summary with key insights and recommendations.
-- A final consolidated SQL view (vw_Master_Report) for dashboards.
+  - Clean, structured relational database in MySQL.
+  - SQL scripts for data cleaning, analysis, and visualization.
+  - Analytical summary with key insights and recommendations.
+  - A final consolidated SQL view (vw_Master_Report) for dashboards.
 
 ## Data Source
 The data was obtained from TechNova’s internal cloud billing system, exported as CSV files.
