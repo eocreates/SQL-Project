@@ -78,11 +78,77 @@ REMOVING DUPLICATES
 
 We tested key columns to identify duplicate values in the dataset. After analysis, we removed all duplicate rows. In total, over 32,000 duplicate records were deleted, ensuring the dataset is accurate, consistent, and ready for reliable analysis. Steps:
 
-* Detect duplicates with COUNT(*)
-* Create an index to speed up the update
-* Use a CTE with ROW_NUMBER() to retain one copy of each duplicate set
-* Delete all extra duplicate rows
+1. Detect duplicates with COUNT(*)
+2. Create an index to speed up the update
+3. Use a CTE with ROW_NUMBER() to retain one copy of each duplicate set
+4. Delete all extra duplicate rows
 * Code Used for Testing and Deleting all Duplicate
+
+```sql
+SELECT ProductionEventSK,BottleID_Natural,Timestamp, COUNT(*)
+FROM FactProductionEvent
+GROUP BY ProductionEventSK,BottleID_Natural,`Timestamp`
+HAVING COUNT(*) > 1;
+
+SELECT ProductionEventSK,BottleID_Natural,Timestamp 
+FROM factproductionevent
+WHERE ProductionEventSK IN (275543,256831,160069)
+ORDER BY ProductionEventSK;
+
+-- NOW CREATE INDEX TO QUICKEN THE UPDATE 
+CREATE INDEX IDX_DUPLICATE 
+ON factproductionevent (ProductionEventSK(100),BottleID_Natural(100),`Timestamp`);
+
+SHOW INDEX FROM factproductionevent;
+
+-- DELETING ALL DUPLICATES
+WITH CTE AS (
+    SELECT ProductionEventSK,BottleID_Natural,Timestamp,
+           ROW_NUMBER() OVER(PARTITION BY ProductionEventSK,BottleID_Natural,Timestamp
+                             ORDER BY ProductionEventSK) AS rn
+    FROM factproductionevent
+)
+DELETE FROM factproductionevent
+WHERE ProductionEventSK IN (SELECT ProductionEventSK FROM CTE WHERE rn > 1);
+
+-- Check if duplicates still exist
+SELECT ProductionEventSK,BottleID_Natural,Timestamp,COUNT(*)
+FROM factproductionevent
+GROUP BY ProductionEventSK,BottleID_Natural,Timestamp
+HAVING COUNT(*) > 1;
+```
+
+PHASE 4
+
+Handling NULL Values During the data cleaning process, several key columns contained missing values (NULL) such as:
+
+* JuiceTemperatureC_In
+* AmbientHumidityPercent_Line
+* ActualCapTorque_Nm
+* CapHopperLevel_Percent
+
+Solution Applied
+1. Detection of NULLs
+
+Queried each column to identify how many rows contained missing values.
+
+2. Calculation of Replacement Values
+
+Computed the column average (AVG()) using only non-NULL records.
+
+3. Imputation
+
+Replaced all NULL values with their respective column averages, ensuring consistency in analysis.
+
+4. Validation
+
+Rechecked the columns to confirm no remaining NULL values.
+
+Why This Approach?
+* Using averages avoids dropping valuable records.
+* Maintains dataset size for downstream analysis.
+* Provides a balanced, non-biased replacement that reflects typical operating values.
+
 
 
 
