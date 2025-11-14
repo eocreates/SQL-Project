@@ -10,7 +10,7 @@ Here are the types of projects you’ll find in this repository:
 
 * [📊 Data Cleaning & Transformation](https://github.com/eocreates/Sales-Data-Cleaning-Preprocessing-Project)
 
-* 📈 Exploratory Data Analysis (EDA)
+* 📈 Nature's Best Cap Analysis
 
 * 🧮 Business KPIs & Reporting Queries
 
