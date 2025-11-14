@@ -1,5 +1,5 @@
 -----
-TechNova Cloud Cost Optimization
+☁️ TechNova Cloud Cost Optimization
 -----
 A Data-Driven Investigation into Cloud Waste and Strategic Spend
 
