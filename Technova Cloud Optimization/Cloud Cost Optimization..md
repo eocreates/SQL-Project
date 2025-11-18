@@ -66,3 +66,147 @@ Datasets Used:
   * performance_metrics.csv – Contains average performance and utilization scores.
   * quarterly_budgets.csv – Defines budget allocations per team.
   * security_findings.csv – Records compliance and security-related data.
+
+## PROFILING 
+Before data cleaning, an initial profiling phase was conducted across all tables to understand data quality, structure, and potential issues. This included checks for primary keys, duplicates, null behaviour, data types and invalid/outlier values.
+All decisions were recorded in Excel as part of the Data Profiling Decision Log.
+
+1. cost_and_usage_report
+Checks Performed
+* Data Types, Row/Column Count, Frequency Distribution, Nulls
+* Verified primary key candidates (line_item_resource_id + line_item_usage_start_date)
+* Checked for duplicate rows
+
+````Sql
+--DATA TYPE PER COLUMN
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'cost_and_usage_report'
+
+--CHECK IF THERE ARE NULLS IN THE COLUMN
+SELECT COUNT(*)
+FROM [dbo].[cost_and_usage_report]
+WHERE [line_item_usage_start_date] IS NULL
+
+--TABLE 1 (cost_and_usage_report)
+SELECT *
+FROM cost_and_usage_report
+
+-- ROW AND COLUMN COUNT
+SELECT COUNT (*)
+,COUNT([line_item_usage_start_date])
+,COUNT([product_name])
+,COUNT([line_item_resource_id])
+,COUNT([line_item_usage_type])
+,COUNT([line_item_usage_amount])
+,COUNT([line_item_blended_cost])
+FROM [dbo].[cost_and_usage_report]
+
+-- FREQUENCY DISTRIBUTION
+SELECT Product_name
+		,COUNT(*) AS Total
+FROM[dbo].[cost_and_usage_report] 
+GROUP BY Product_name
+
+-- (1) LINE ITEM USAGE START DATE COLUMN
+
+--CHECK IF THERE ARE NULLS IN THE COLUMN
+SELECT COUNT(*)
+FROM [dbo].[cost_and_usage_report]
+WHERE [line_item_usage_start_date] IS NULL 
+
+--CHANGE DATATYPE USING TRY_CAST AND CHECK INCOSISTENCIES REASONS
+SELECT [line_item_usage_start_date]
+		,TRY_CAST ([line_item_usage_start_date] AS DATE) AS New_Date
+FROM [dbo].[cost_and_usage_report]
+WHERE TRY_CAST ([line_item_usage_start_date] AS DATE) IS NULL
+
+
+--(2) ITEM BLENDED COST COLUMN
+
+--CHECK IF THERE ARE NULLS IN THE COLUMN
+SELECT COUNT(*)
+FROM [dbo].[cost_and_usage_report]
+WHERE [line_item_blended_cost] IS NULL 
+
+--CHANGE DATATYPE USING TRY_CAST AND CHECK INCOSISTENCIES REASONS
+SELECT line_item_blended_cost
+,TRY_CAST ([line_item_blended_cost] AS DECIMAL(10,2)) 
+FROM cost_and_usage_report
+WHERE TRY_CAST ([line_item_blended_cost] AS DECIMAL(10,2)) IS NULL
+
+---CHECKING FOR DUPLICATES
+SELECT line_item_resource_id
+		,line_item_usage_start_date
+		,COUNT (*) as Duplicate
+FROM cost_and_usage_report
+GROUP BY line_item_resource_id, line_item_usage_start_date
+HAVING COUNT (*) >1
+---There are no duplicates
+````
+
+2. cost_and_usage_report
+Checks Performed
+* Data Types, Row/Column Count, Frequency Distribution
+* Checked for duplicate rows
+* Checked uniqueness of (resource_id, metric_timestamp)
+* Investigated null resource IDs
+* Assessed data completeness per timestamp
+````sql
+
+--DATA TYPES PER COLUMN
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'resource_tags'
+
+-- COUNT RECORDS FOR EACH COLUMN
+SELECT COUNT(*) total_rows,
+COUNT(line_item_resource_id) AS cnt_line_item_resource_id,
+COUNT(resource_tag_team) AS cnt_line_item_usage_type,
+COUNT(resource_tag_project) AS cnt_line_item_usage_amount,
+COUNT(resource_tag_environment) AS cnt_line_item_blended_cost
+FROM resource_tags
+
+-- FREQUENCY DISTRIBUTION 
+SELECT [resource_tag_team]
+,COUNT (*)
+FROM [dbo].[resource_tags]
+GROUP BY [resource_tag_team]
+
+SELECT [resource_tag_project]
+,COUNT (*)
+FROM [dbo].[resource_tags]
+GROUP BY [resource_tag_project]
+
+SELECT resource_tag_environment
+		,COUNT (*)
+FROM [dbo].[resource_tags]
+GROUP BY resource_tag_environment
+
+--JOINING  COST USAGE AND REPORT WITH RESOURCE TAGS AS BOTH TABLE CONTAIN PRIMARY KEY (COST AND USAGE AND REPORT) AND FOREIGN KEY (RESOURCE TAGS)
+SELECT *
+FROM cost_and_usage_report C
+JOIN resource_tags r
+ON c.[line_item_resource_id]= r.[line_item_resource_id]
+
+--- TO FIND line_item_resource_id THAT IS IN RESOURCE TAG BUT NOT IN COST USAGE REPORT 
+SELECT  line_item_resource_id
+FROM [dbo].[resource_tags]
+WHERE  line_item_resource_id NOT IN (
+SELECT line_item_resource_id
+FROM cost_and_usage_report)
+
+
+---CHECKING FOR DUPLICATES
+SELECT resource_id
+		,metric_timestamp
+		,COUNT (*) as Duplicate
+FROM performance_metrics
+GROUP BY resource_id, metric_timestamp
+HAVING COUNT (*) >1
+--There are duplicates values found on the nulls resources id 
+-- We have resources that were not record on each date
+````
+
+
+
