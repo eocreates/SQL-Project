@@ -73,9 +73,9 @@ All decisions were recorded in Excel as part of the Data Profiling Decision Log.
 
 1. cost_and_usage_report
 Checks Performed
-* Data Types, Row/Column Count, Frequency Distribution, Nulls
-* Verified primary key candidates (line_item_resource_id + line_item_usage_start_date)
-* Checked for duplicate rows
+	* Data Types, Row/Column Count, Frequency Distribution, Nulls
+	* Verified primary key candidates (line_item_resource_id + line_item_usage_start_date)
+	* Checked for duplicate rows
 
 ````Sql
 --DATA TYPE PER COLUMN
@@ -145,13 +145,13 @@ HAVING COUNT (*) >1
 ---There are no duplicates
 ````
 
-2. cost_and_usage_report
+2. performance_metrics
 Checks Performed
-* Data Types, Row/Column Count, Frequency Distribution
-* Checked for duplicate rows
-* Checked uniqueness of (resource_id, metric_timestamp)
-* Investigated null resource IDs
-* Assessed data completeness per timestamp
+	* Data Types, Row/Column Count, Frequency Distribution
+	* Checked for duplicate rows
+	* Checked uniqueness of (resource_id, metric_timestamp)
+	* Investigated null resource IDs
+	* Assessed data completeness per timestamp
 ````sql
 
 --DATA TYPES PER COLUMN
@@ -208,5 +208,132 @@ HAVING COUNT (*) >1
 -- We have resources that were not record on each date
 ````
 
+3. resource_configuration
+   Checks Performed
+	* Data Types, Row/Column Count, Nulls
+	* Checked for duplicate rows
+ 	* Validated uniqueness of resource_id
+
+```sql
+
+--DATA TYPES PER COLUMN
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'resource_configuration'
+
+--COUNT RECORDS FOR EACH COLUMN
+SELECT	COUNT (*) TOTALROWS
+		,COUNT ([resource_id]) 
+		,COUNT([product_name])
+		,COUNT([instance_type])
+		,COUNT([decommission_date]) 
+FROM [dbo].[resource_configuration]
+
+-- CHECKS FOR NULLS 
+SELECT *
+FROM [dbo].[resource_configuration]
+WHERE instance_type IS NULL AND  decommission_date IS NULL
+
+-- % OF NON NULLS OF EACH COLUMN IN THE TABLE
+SELECT	100 - (COUNT (resource_id) *100.0/ COUNT(*)) AS  [% of nulls resourceid]
+		,100 - (COUNT (product_name) *100.0/ COUNT(*)) AS  [% of nulls productname]
+		,100 - (COUNT (instance_type) *100.0/ COUNT(*)) AS  [% of nulls instance_type]  
+		,100 - (COUNT (decommission_date) *100.0/ COUNT(*)) AS  [% of nulls decommision_date]
+FROM [dbo].[resource_configuration]
+
+SELECT *
+FROM [dbo].[resource_configuration]
+WHERE [decommission_date] IS NOT NULL and [instance_type] is not null
+
+---CHECKING FOR DUPLICATES
+SELECT resource_id
+		,COUNT (*) AS Dup
+FROM resource_configuration
+GROUP BY resource_id
+HAVING COUNT (*) > 1
+---There are no duplicates
+````
+
+4. resource_tags
+Checks Performed
+	* Data Types, Row/Column Count, Nulls
+ 	* Checked uniqueness of line_item_resource_id
+```sql
+
+--DATA TYPES PER COLUMN
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'performance_metrics'
+
+--COUNT RECORDS FOR EACH COLUMN
+SELECT	COUNT (*) TOTALROWS
+		,COUNT ([resource_id]) 
+		,COUNT([metric_timestamp])
+		,COUNT([metric_name])
+		,COUNT([average_value]) 
+FROM [dbo].[performance_metrics]
+
+-- CHECKS FOR NULLS 
+SELECT *
+FROM [dbo].[performance_metrics]
+WHERE [resource_id] IS NULL
+		OR [metric_timestamp] IS NULL
+		OR [metric_name] IS NULL
+		OR [average_value] IS NULL
+
+-- % OF NON NULLS OF EACH COLUMN IN THE TABLE
+SELECT 100 - COUNT(resource_id) * 100.0/ COUNT(*) AS [% of Null resource id]
+		,100 - COUNT(metric_timestamp) * 100.0/ COUNT(*) AS [% of Null metric_timestamp]
+		,100 - COUNT (metric_name)  * 100.0/ COUNT(*) AS [% of Null metric_name]
+		,100 - COUNT (average_value)  * 100.0/ COUNT(*) AS [% of Null average_value]
+FROM [dbo].[performance_metrics]
+````
+
+5. quarterly_budgets
+Checks Performed
+	* Data Types, Row/Column Count
+
+````sql
+--CHECK THE DATA TYPE
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'quarterly_budgets'
+
+-- COUNT THE COLUMN
+SELECT	COUNT (*) Total_Rows
+		,COUNT([quarter_start_date]) 
+		,COUNT ([team_name])
+		,COUNT ([quarterly_budgeted_amount])
+FROM[dbo].[quarterly_budgets]
+
+````
+   
+6. security_findings
+Checks Performed
+	* Data Types
+	* Checked uniqueness of resource_id
+ 	* Ensured no duplicated security alerts per resource
+```sql
+SELECT *
+FROM [dbo].[security_findings]
+
+--CHECK THE DATA TYPE
+SELECT COLUMN_NAME, DATA_TYPE
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'security_findings'
+
+-- COUNT THE COLUMN
+SELECT	COUNT (*) Total_Rows
+		,COUNT([finding_id]) 
+		,COUNT ([resource_id])
+		,COUNT ([finding_description])
+		,COUNT ([severity])
+FROM [dbo].[security_findings]
+
+````
+## DECISION TABLE — DATA QUALITY & CLEANING STRATEGY
 
 
+
+
+   
