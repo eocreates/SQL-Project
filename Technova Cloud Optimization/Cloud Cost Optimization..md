@@ -516,7 +516,7 @@ SET instance = CASE
 			END
 FROM resource_configuration
 ````
-## Final Cleaning Notes & Outcomes
+## Cleaning Outcomes
 
 | Cleaning Area        | Issue Found                   | Action Taken                 | Result                           |
 | -------------------- | ----------------------------- | ---------------------------- | -------------------------------- |
