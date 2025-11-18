@@ -525,9 +525,11 @@ FROM resource_configuration
 | Outliers             | 999 and -0.130                | Removed or categorised       | Dataset normalised               |
 | Tags                 | Inconsistent naming           | Standardised via CASE        | Clean team mapping               |
 | Server Types         | NULL instances                | Reclassified as “non-server” | Improved resource classification |
---
+
+
 | Before | After |
 |--------|--------|
-| <img src="https://raw.githubusercontent.com/eocreates/eocreates/main/Technova%20Cloud%20Optimization/Clean%20Data.jpg" width="500"/> | <img src="https://raw.githubusercontent.com/eocreates/eocreates/main/Technova%20Cloud%20Optimization/Dirty%20Data.jpg" width="500"/> |
+| <a href="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Dirty%20Data.jpg" target="_blank"><img src="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Dirty%20Data.jpg" width="350"></a> | <a href="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Clean%20Data.jpg" target="_blank"><img src="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Clean%20Data.jpg" width="350"></a> |
+
 
 
