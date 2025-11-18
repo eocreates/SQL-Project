@@ -529,7 +529,7 @@ FROM resource_configuration
 
 | Before | After |
 |--------|--------|
-| <a href="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Dirty%20Data.jpg" target="_blank"><img src="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Dirty%20Data.jpg" width="350"></a> | <a href="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Clean%20Data.jpg" target="_blank"><img src="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Clean%20Data.jpg" width="350"></a> |
+| <a href="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Dirty%20Data.jpg" target="_blank"><img src="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Dirty%20Data.jpg" width="600"></a> | <a href="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Clean%20Data.jpg" target="_blank"><img src="https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Clean%20Data.jpg" width="600"></a> |
 
 
 
