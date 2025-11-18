@@ -12,4 +12,4 @@ Here are the types of projects you’ll find in this repository:
 
 * [📈 Nature's Best Cap Analysis](https://github.com/eocreates/SQL-Project/blob/main/Nature%20Best%20Cap%20Analysis/SQL%20Script/README..md)
 
-* [☁️ TechNova Cloud Optimization](https://github.com/eocreates/SQL-Project/edit/main/Technova%20Cloud%20Optimization/Cloud%20Cost%20Optimization.md)
+* [☁️ TechNova Cloud Optimization](https://github.com/eocreates/SQL-Project/blob/main/Technova%20Cloud%20Optimization/Cloud%20Cost%20Optimization..md)
