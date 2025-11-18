@@ -332,7 +332,9 @@ FROM [dbo].[security_findings]
 
 ````
 ## DECISION TABLE — DATA QUALITY & CLEANING STRATEGY
-
+<a href="https://raw.githubusercontent.com/eocreates/SQL-Project/main/Technova%Cloud%Optimization/Descisiontable.jpg">
+  <img src="https://raw.githubusercontent.com/eocreates/SQL-Project/main/Technova%Cloud%Optimization/Descisiontable.jpg" width="400">
+</a>
 
 
 
