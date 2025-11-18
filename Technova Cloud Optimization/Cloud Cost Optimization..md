@@ -1,4 +1,3 @@
------
 ☁️ Cloud Cost Optimization- Technova
 -----
 A Data-Driven Investigation into Cloud Waste and Strategic Spend Analyzing and reducing unnecessary cloud expenses using SQL to identify waste, inefficiency, and opportunities for savings.
