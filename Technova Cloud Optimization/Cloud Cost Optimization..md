@@ -72,10 +72,10 @@ Before data cleaning, an initial profiling phase was conducted across all tables
 All decisions were recorded in Excel as part of the Data Profiling Decision Log.
 
 1. cost_and_usage_report
-# Checks Performed
-	* Data Types, Row/Column Count, Frequency Distribution, Nulls
-	* Verified primary key candidates (line_item_resource_id + line_item_usage_start_date)
-	* Checked for duplicate rows
+* Checks Performed
+	- Data Types, Row/Column Count, Frequency Distribution, Nulls
+	- Verified primary key candidates (line_item_resource_id + line_item_usage_start_date)
+	- Checked for duplicate rows
 
 ````Sql
 --DATA TYPE PER COLUMN
@@ -146,12 +146,12 @@ HAVING COUNT (*) >1
 ````
 
 2. performance_metrics
-Checks Performed
-	* Data Types, Row/Column Count, Frequency Distribution
-	* Checked for duplicate rows
-	* Checked uniqueness of (resource_id, metric_timestamp)
-	* Investigated null resource IDs
-	* Assessed data completeness per timestamp
+* Checks Performed
+	- Data Types, Row/Column Count, Frequency Distribution
+	- Checked for duplicate rows
+	- Checked uniqueness of (resource_id, metric_timestamp)
+	- Investigated null resource IDs
+	- Assessed data completeness per timestamp
 ````sql
 
 --DATA TYPES PER COLUMN
@@ -209,10 +209,10 @@ HAVING COUNT (*) >1
 ````
 
 3. resource_configuration
-   Checks Performed
-	* Data Types, Row/Column Count, Nulls
-	* Checked for duplicate rows
- 	* Validated uniqueness of resource_id
+* Checks Performed
+	- Data Types, Row/Column Count, Nulls
+	- Checked for duplicate rows
+ 	- Validated uniqueness of resource_id
 
 ```sql
 
@@ -255,9 +255,9 @@ HAVING COUNT (*) > 1
 ````
 
 4. resource_tags
-Checks Performed
-	* Data Types, Row/Column Count, Nulls
- 	* Checked uniqueness of line_item_resource_id
+* Checks Performed
+	- Data Types, Row/Column Count, Nulls
+ 	- Checked uniqueness of line_item_resource_id
 ```sql
 
 --DATA TYPES PER COLUMN
@@ -290,8 +290,8 @@ FROM [dbo].[performance_metrics]
 ````
 
 5. quarterly_budgets
-Checks Performed
-	* Data Types, Row/Column Count
+^ Checks Performed
+	- Data Types, Row/Column Count
 
 ````sql
 --CHECK THE DATA TYPE
@@ -309,10 +309,10 @@ FROM[dbo].[quarterly_budgets]
 ````
    
 6. security_findings
-Checks Performed
-	* Data Types
-	* Checked uniqueness of resource_id
- 	* Ensured no duplicated security alerts per resource
+* Checks Performed
+	- Data Types
+	- Checked uniqueness of resource_id
+ 	- Ensured no duplicated security alerts per resource
 ```sql
 SELECT *
 FROM [dbo].[security_findings]
@@ -341,13 +341,13 @@ After completing data profiling, the next stage involved extensive data cleaning
 
 Phase 1 — (CLEANING DATES AND TIMESTAMP COLUMS)
 1. cost_and_usage_report — line_item_usage_start_date
-Issue Identified
-	* Some dates contained the suffix "th", preventing correct conversion to DATE data type.
-Actions Taken
-	* Identified invalid date formats using TRY_CAST.
-	* Removed 'th' using REPLACE.
-	* Created a new clean DATE column Usage_Date.
-	* Updated the new column with the cleaned date.
+* Issue Identified
+	- Some dates contained the suffix "th", preventing correct conversion to DATE data type.
+* Actions Taken
+	- Identified invalid date formats using TRY_CAST.
+	- Removed 'th' using REPLACE.
+	- Created a new clean DATE column Usage_Date.
+	- Updated the new column with the cleaned date.
 ```sql
 SELECT line_item_usage_start_date
 		,TRY_CAST (line_item_usage_start_date AS DATE)
@@ -372,9 +372,9 @@ SET Usage_Date = TRY_CAST( REPLACE(line_item_usage_start_date,'th','') AS DATE)
 
 
 2. performance_metrics — metric_timestamp
-Issue Identified
-	* Same “th” suffix issue affecting date conversion.
-Actions Taken
+* Issue Identified
+	- Same “th” suffix issue affecting date conversion.
+* Actions Taken
 	* Checked for invalid timestamp formats.
  	* Applied REPLACE to remove 'th'.
   	* Added a new DATE column metric_date.
@@ -402,15 +402,15 @@ SET metric_date = TRY_CAST(REPLACE(metric_timestamp, 'th','') AS DATE)
 
 PHASE 2 (CLEANING NUMERIC COLUMNS) ITEM BLENDED COST COLUMN
 1. cost_and_usage_report — line_item_blended_cost
-	* Issues Identified
- 	* Stored as string and contained the $ symbol.
-  	* Also contained numeric outliers (999 and -0.130).
+	- Issues Identified
+ 	- Stored as string and contained the $ symbol.
+  	- Also contained numeric outliers (999 and -0.130).
    
-Actions Taken
-	* Removed $ using REPLACE.
-	* Cast the cleaned result to FLOAT.
-	* Added new numeric column blended_cost.
-	* Populate cleaned values.
+* Actions Taken
+	- Removed $ using REPLACE.
+	- Cast the cleaned result to FLOAT.
+	- Added new numeric column blended_cost.
+	- Populate cleaned values.
 
 ```Sql
 --- CLEANING ($ sign) and Data Type to Float
@@ -428,17 +428,17 @@ SET blended_cost = TRY_CAST(REPLACE(line_item_blended_cost, '$','')AS float)
 
 ```
 Outlier Handling
-1. Outlier = 999
-	Extremely higher than typical values.
-	Removed from dataset.
+*  Outlier = 999
+	- Extremely higher than typical values.
+	- Removed from dataset.
 ```sql
 DELETE FROM cost_and_usage_report
 WHERE blended_cost = 999;
 ```
-2. Outlier = -0.130
-	Negative cost indicates refund, not an error.
-	Added a new column: Cost_Type
-	Categorised costs into Charge (positive) and Refund (negative).
+*  Outlier = -0.130
+	- Negative cost indicates refund, not an error.
+	- Added a new column: Cost_Type
+	- Categorised costs into Charge (positive) and Refund (negative).
 
 ```Sql
 UPDATE cost_and_usage_report
@@ -450,12 +450,12 @@ SET Cost_type =
 
 Phase 3 — CLEANING CATEGORICAL FIELDS
 1. resource_tags — resource_tag_team
-	Issue Identified
-	* Tags had inconsistent naming: user-frontend-team → user-frontend; payments-team → payments etc.
-Actions Taken
-	* Standardised team names using a CASE expression.
- 	* Added a new column resource_team.
-	* Populated it with cleaned, consistent labels.
+	* Issue Identified
+		-  Tags had inconsistent naming: user-frontend-team → user-frontend; payments-team → payments etc.
+* Actions Taken
+	- Standardised team names using a CASE expression.
+ 	- Added a new column resource_team.
+	- Populated it with cleaned, consistent labels.
 
 ```Sql
 SELECT resource_tag_team 
@@ -487,11 +487,11 @@ FROM resource_tags
 ````
 
 2. resource_configuration — instance_type
-Issue Identified
-	* NULL values in instance_type meant the resource is not a compute server.
-Actions Taken
-	* Created a new column instance.
-	* Replaced NULLs with 'non-server'.
+* Issue Identified
+	- NULL values in instance_type meant the resource is not a compute server.
+* Actions Taken
+	- Created a new column instance.
+	- Replaced NULLs with 'non-server'.
 
 ````Sql
 
