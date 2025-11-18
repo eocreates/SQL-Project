@@ -290,7 +290,7 @@ FROM [dbo].[performance_metrics]
 ````
 
 5. quarterly_budgets
-^ Checks Performed
+* Checks Performed
 	- Data Types, Row/Column Count
 
 ````sql
@@ -339,7 +339,7 @@ FROM [dbo].[security_findings]
 ## CLEANING
 After completing data profiling, the next stage involved extensive data cleaning across date, numeric, and categorical fields. The goal is to standardise formats, correct inconsistencies, and enhance analytical usability while preserving data integrity.
 
-Phase 1 — (CLEANING DATES AND TIMESTAMP COLUMS)
+PHASE  1 — CLEANING DATES AND TIMESTAMP COLUMS
 1. cost_and_usage_report — line_item_usage_start_date
 * Issue Identified
 	- Some dates contained the suffix "th", preventing correct conversion to DATE data type.
@@ -400,7 +400,7 @@ UPDATE performance_metrics
 SET metric_date = TRY_CAST(REPLACE(metric_timestamp, 'th','') AS DATE)
 ````
 
-PHASE 2 (CLEANING NUMERIC COLUMNS) ITEM BLENDED COST COLUMN
+PHASE 2 - CLEANING NUMERIC COLUMNS
 1. cost_and_usage_report — line_item_blended_cost
 	- Issues Identified
  	- Stored as string and contained the $ symbol.
@@ -448,7 +448,7 @@ SET Cost_type =
     END;
 ````
 
-Phase 3 — CLEANING CATEGORICAL FIELDS
+PHASE 3 — CLEANING CATEGORICAL FIELDS
 1. resource_tags — resource_tag_team
 	* Issue Identified
 		-  Tags had inconsistent naming: user-frontend-team → user-frontend; payments-team → payments etc.
@@ -525,5 +525,5 @@ FROM resource_configuration
 | Outliers             | 999 and -0.130                | Removed or categorised       | Dataset normalised               |
 | Tags                 | Inconsistent naming           | Standardised via CASE        | Clean team mapping               |
 | Server Types         | NULL instances                | Reclassified as “non-server” | Improved resource classification |
-| Missing Resource IDs | Null resource_id              | Excluded                     | Accurate metrics per resource    |
+
 
