@@ -72,7 +72,7 @@ Before data cleaning, an initial profiling phase was conducted across all tables
 All decisions were recorded in Excel as part of the Data Profiling Decision Log.
 
 1. cost_and_usage_report
-Checks Performed
+	Checks Performed
 	* Data Types, Row/Column Count, Frequency Distribution, Nulls
 	* Verified primary key candidates (line_item_resource_id + line_item_usage_start_date)
 	* Checked for duplicate rows
