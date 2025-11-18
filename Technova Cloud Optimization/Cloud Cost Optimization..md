@@ -336,6 +336,194 @@ FROM [dbo].[security_findings]
   <img src="https://raw.githubusercontent.com/eocreates/SQL-Project/main/Technova%20Cloud%20Optimization/Descisiontable.jpg" width="700">
 </a>
 
+## CLEANING
+After completing data profiling, the next stage involved extensive data cleaning across date, numeric, and categorical fields. The goal is to standardise formats, correct inconsistencies, and enhance analytical usability while preserving data integrity.
+
+Phase 1 — (CLEANING DATES AND TIMESTAMP COLUMS)
+1. cost_and_usage_report — line_item_usage_start_date
+Issue Identified
+	* Some dates contained the suffix "th", preventing correct conversion to DATE data type.
+Actions Taken
+	* Identified invalid date formats using TRY_CAST.
+	* Removed 'th' using REPLACE.
+	* Created a new clean DATE column Usage_Date.
+	* Updated the new column with the cleaned date.
+```sql
+SELECT line_item_usage_start_date
+		,TRY_CAST (line_item_usage_start_date AS DATE)
+FROM cost_and_usage_report
+WHERE TRY_CAST (line_item_usage_start_date AS DATE) is null
+
+--- REPLACE 'TH' with ""
+SELECT line_item_usage_start_date
+		,TRY_CAST( REPLACE(line_item_usage_start_date,'th','') AS DATE) Clean_Date
+FROM cost_and_usage_report
+WHERE TRY_CAST (line_item_usage_start_date AS DATE) is null
+
+--NOW THE DATES HAVE BEEN CLEANED
+-- ADD A NEW DATE COLUMN  TO THE TABLE
+ALTER TABLE [dbo].[cost_and_usage_report]
+ADD Usage_Date DATE
+
+--- UPDATE THE CLEANED DATE INTO THE NEW DATE COLUMN (Usage Date)
+UPDATE cost_and_usage_report
+SET Usage_Date = TRY_CAST( REPLACE(line_item_usage_start_date,'th','') AS DATE)
+```
 
 
+2. performance_metrics — metric_timestamp
+Issue Identified
+	* Same “th” suffix issue affecting date conversion.
+Actions Taken
+	* Checked for invalid timestamp formats.
+ 	* Applied REPLACE to remove 'th'.
+  	* Added a new DATE column metric_date.
+   	* Populated the cleaned dates.
+````Sql
+--LOOKUP FOR THE INCORRECT DATE FORMATS
+SELECT metric_timestamp
+		,TRY_CAST(metric_timestamp as DATE)
+FROM performance_metrics
+WHERE TRY_CAST(metric_timestamp as DATE) IS NULL
+
+-- REPLACE 'TH' WITH ''
+SELECT metric_timestamp
+		,TRY_CAST(REPLACE(metric_timestamp, 'th','') AS DATE) Cleaned_Date
+FROM performance_metrics
+
+-- ADD A NEW COLUMN
+ALTER TABLE performance_metrics
+ADD metric_date DATE
+
+-- UPDATE THE NEW COLUMN 
+UPDATE performance_metrics
+SET metric_date = TRY_CAST(REPLACE(metric_timestamp, 'th','') AS DATE)
+````
+
+PHASE 2 (CLEANING NUMERIC COLUMNS) ITEM BLENDED COST COLUMN
+1. cost_and_usage_report — line_item_blended_cost
+	* Issues Identified
+ 	* Stored as string and contained the $ symbol.
+  	* Also contained numeric outliers (999 and -0.130).
    
+Actions Taken
+	* Removed $ using REPLACE.
+	* Cast the cleaned result to FLOAT.
+	* Added new numeric column blended_cost.
+	* Populate cleaned values.
+
+```Sql
+--- CLEANING ($ sign) and Data Type to Float
+SELECT line_item_blended_cost
+		 ,TRY_CAST(REPLACE(line_item_blended_cost, '$','')AS FLOAT)
+FROM cost_and_usage_report
+
+---- ADD A NEW COLUMN
+ALTER TABLE cost_and_usage_report
+ADD blended_cost FLOAT
+
+-- UPDATE THE NEW COLUMN (BLENDED COST) TO THE CLEANED DECIMAL COLUMN
+UPDATE cost_and_usage_report
+SET blended_cost = TRY_CAST(REPLACE(line_item_blended_cost, '$','')AS float)
+
+```
+Outlier Handling
+1. Outlier = 999
+	Extremely higher than typical values.
+	Removed from dataset.
+```sql
+DELETE FROM cost_and_usage_report
+WHERE blended_cost = 999;
+```
+2. Outlier = -0.130
+	Negative cost indicates refund, not an error.
+	Added a new column: Cost_Type
+	Categorised costs into Charge (positive) and Refund (negative).
+
+```Sql
+UPDATE cost_and_usage_report
+SET Cost_type =
+    CASE WHEN blended_cost < 0 THEN 'Refund'
+         ELSE 'Charge'
+    END;
+````
+
+Phase 3 — CLEANING CATEGORICAL FIELDS
+1. resource_tags — resource_tag_team
+	Issue Identified
+	* Tags had inconsistent naming: user-frontend-team → user-frontend; payments-team → payments etc.
+Actions Taken
+	* Standardised team names using a CASE expression.
+ 	* Added a new column resource_team.
+	* Populated it with cleaned, consistent labels.
+
+```Sql
+SELECT resource_tag_team 
+		, CASE
+			 WHEN 	resource_tag_team IN ('user-frontend-team') THEN 'user-frontend'
+			 WHEN	resource_tag_team IN ('data-platform-team') THEN 'data-platform'
+			 WHEN   resource_tag_team IN ( 'payments-team') THEN 'payments'
+			 WHEN	resource_tag_team IN ('marketing-api-team') THEN 'marketing-api'
+			 WHEN	resource_tag_team IN ('identity-team') THEN 'identity'
+				 ELSE resource_tag_team	
+					END
+FROM resource_tags
+
+---- ADD A NEW COLUMN
+ALTER TABLE resource_tags
+ADD resource_team VARCHAR (99)
+
+-- UPDATE THE NEW COLUMN (resource_team) TO THE CLEANED VARCHAR COLUMN
+UPDATE resource_tags
+SET resource_team = CASE
+			 WHEN 	resource_tag_team IN ('user-frontend-team') THEN 'user-frontend'
+			 WHEN	resource_tag_team IN ('data-platform-team') THEN 'data-platform'
+			 WHEN   resource_tag_team IN ( 'payments-team') THEN 'payments'
+			 WHEN	resource_tag_team IN ('marketing-api-team') THEN 'marketing-api'
+			 WHEN	resource_tag_team IN ('identity-team') THEN 'identity'
+				 ELSE resource_tag_team	
+					END
+FROM resource_tags
+````
+
+2. resource_configuration — instance_type
+Issue Identified
+	* NULL values in instance_type meant the resource is not a compute server.
+Actions Taken
+	* Created a new column instance.
+	* Replaced NULLs with 'non-server'.
+
+````Sql
+
+--- FLAGGING NON-SERVER ROWS (INSTANCE TYPE COLUMN) i.e CHANGING NULL TO NON SERVER
+SELECT instance_type
+		, CASE 
+			WHEN instance_type is null THEN 'non-server'
+			ELSE instance_type
+			END
+FROM resource_configuration
+
+
+---- ADD A NEW COLUMN
+ALTER TABLE resource_configuration
+ADD instance VARCHAR (99)
+
+-- UPDATE THE NEW COLUMN (Instance) TO THE CLEANED VARCHAR COLUMN
+UPDATE resource_configuration
+SET instance = CASE 
+			WHEN instance_type is null THEN 'non-server'
+			ELSE instance_type
+			END
+FROM resource_configuration
+````
+## Final Cleaning Notes & Outcomes
+
+| Cleaning Area        | Issue Found                   | Action Taken                 | Result                           |
+| -------------------- | ----------------------------- | ---------------------------- | -------------------------------- |
+| Dates & Formats      | “th” suffix breaking CAST     | Cleaned & new columns added  | All dates now valid              |
+| Numeric Cost         | `$` symbol and text data type | Converted to FLOAT           | Numeric ready for analysis       |
+| Outliers             | 999 and -0.130                | Removed or categorised       | Dataset normalised               |
+| Tags                 | Inconsistent naming           | Standardised via CASE        | Clean team mapping               |
+| Server Types         | NULL instances                | Reclassified as “non-server” | Improved resource classification |
+| Missing Resource IDs | Null resource_id              | Excluded                     | Accurate metrics per resource    |
+
