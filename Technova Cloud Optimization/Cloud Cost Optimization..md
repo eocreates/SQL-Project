@@ -527,3 +527,4 @@ FROM resource_configuration
 | Server Types         | NULL instances                | Reclassified as “non-server” | Improved resource classification |
 
 
+
